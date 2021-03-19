@@ -38,6 +38,35 @@
           </v-container>
         </v-card>
       </div>
+      <div>
+        <v-menu
+          offset-y
+          :close-on-content-click="false"
+          transition="scale-transition"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-card width="355px" class="ma-3" v-bind="attrs" v-on="on">
+              <v-card-title>カード追加</v-card-title>
+            </v-card>
+          </template>
+
+          <v-card height="150px">
+            <v-container>
+              <v-text-field label="カード名" v-model="cardName"></v-text-field>
+              <v-card-actions>
+                <v-btn
+                  color="green lighten-1"
+                  @click="addCard"
+                  :disabled="!cardName"
+                  width="100%"
+                  class="white--text font-weight-bold"
+                  >追加</v-btn
+                >
+              </v-card-actions>
+            </v-container>
+          </v-card>
+        </v-menu>
+      </div>
     </draggable>
   </div>
 </template>
@@ -55,6 +84,7 @@ export default Vue.extend({
   components: { draggable },
   data() {
     return {
+      cardName: "",
       valueData: ["TODO", "作業中", "完了"],
     };
   },
@@ -73,6 +103,12 @@ export default Vue.extend({
       this.valueData.forEach((value) =>
         this.$store.dispatch("task/addCard", { name: value })
       );
+  },
+  methods: {
+    addCard() {
+      this.$store.dispatch("task/addCard", { name: this.cardName });
+      this.cardName = "";
+    },
   },
 });
 </script>
