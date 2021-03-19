@@ -53,6 +53,11 @@ import { Card } from "@/model";
 export default Vue.extend({
   name: "Home",
   components: { draggable },
+  data() {
+    return {
+      valueData: ["TODO", "作業中", "完了"],
+    };
+  },
   computed: {
     cards: {
       get(): Card[] {
@@ -62,6 +67,12 @@ export default Vue.extend({
         this.$store.dispatch("task/changeCard", value);
       },
     },
+  },
+  mounted() {
+    if (this.cards.length === 0)
+      this.valueData.forEach((value) =>
+        this.$store.dispatch("task/addCard", { name: value })
+      );
   },
 });
 </script>

@@ -3,32 +3,37 @@ import { Commit } from "vuex";
 
 interface TaskState {
   cards: Card[];
+  CardCount: number;
 }
 
 const state: TaskState = {
-  cards: [
-    {
-      cardId: 1,
-      name: "カード1",
-      items: [{ itemId: 1, name: "アイテム1", detail: "詳細" }],
-    },
-    {
-      cardId: 2,
-      name: "カード2",
-      items: [{ itemId: 2, name: "アイテム2", detail: "詳細" }],
-    },
-  ],
+  cards: [],
+  CardCount: 0,
 };
 
 const mutations = {
+  incrementCardCount(state: TaskState): void {
+    state.CardCount++;
+  },
   updateCard(state: TaskState, value: Card[]): void {
     state.cards = value;
+  },
+  addCard(state: TaskState, value: { name: string }): void {
+    state.cards.push({
+      cardId: state.CardCount,
+      name: value.name,
+      items: [],
+    });
   },
 };
 
 const actions = {
   changeCard(context: { commit: Commit }, payload: Card[]): void {
     context.commit("updateCard", payload);
+  },
+  addCard(context: { commit: Commit }, payload: { name: string }): void {
+    context.commit("incrementCardCount");
+    context.commit("addCard", payload);
   },
 };
 
