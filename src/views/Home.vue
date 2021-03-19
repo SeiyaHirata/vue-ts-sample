@@ -19,11 +19,22 @@
             }}</v-toolbar-title>
           </v-app-bar>
           <v-container class="overflow-y-auto" style="max-height: 700px">
-            <v-card class="ma-2" v-for="(item, i) in card.items" :key="i">
-              <v-card-text class="font-weight-bold"
-                >{{ item.name }}
-              </v-card-text>
-            </v-card>
+            <draggable
+              :animation="200"
+              v-model="card.items"
+              tag="div"
+              group="listGruop"
+            >
+              <v-card
+                class="ma-2 move-cursor"
+                v-for="(item, i) in card.items"
+                :key="i"
+              >
+                <v-card-text class="font-weight-bold"
+                  >{{ item.name }}
+                </v-card-text>
+              </v-card>
+            </draggable>
           </v-container>
         </v-card>
       </div>
@@ -33,6 +44,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+
+// Vue.Draggable公式ドキュメント
+// https://github.com/SortableJS/Vue.Draggable
 import draggable from "vuedraggable";
 import { Card } from "@/model";
 
