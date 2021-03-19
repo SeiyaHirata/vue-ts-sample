@@ -1,4 +1,5 @@
 import { Card } from "@/model";
+import { Commit } from "vuex";
 
 interface TaskState {
   cards: Card[];
@@ -19,9 +20,17 @@ const state: TaskState = {
   ],
 };
 
-const mutations = {};
+const mutations = {
+  updateCard(state: TaskState, value: Card[]): void {
+    state.cards = value;
+  },
+};
 
-const actions = {};
+const actions = {
+  changeCard(context: { commit: Commit }, payload: Card[]): void {
+    context.commit("updateCard", payload);
+  },
+};
 
 export const task = {
   namespaced: true,
