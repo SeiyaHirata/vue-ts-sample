@@ -4,16 +4,21 @@ import { Commit } from "vuex";
 interface TaskState {
   cards: Card[];
   CardCount: number;
+  ItemCount: number;
 }
 
 const state: TaskState = {
   cards: [],
   CardCount: 0,
+  ItemCount: 0,
 };
 
 const mutations = {
   incrementCardCount(state: TaskState): void {
     state.CardCount++;
+  },
+  incrementItemCount(state: TaskState): void {
+    state.ItemCount++;
   },
   updateCard(state: TaskState, value: Card[]): void {
     state.cards = value;
@@ -25,6 +30,19 @@ const mutations = {
       items: [],
     });
   },
+  addItem(
+    state: TaskState,
+    value: { cardId: number; name: string; detail: string }
+  ): void {
+    const card = state.cards.find((v) => v.cardId === value.cardId);
+    if (card) {
+      card.items.push({
+        itemId: state.ItemCount,
+        name: value.name,
+        detail: value.detail,
+      });
+    }
+  },
 };
 
 const actions = {
@@ -34,6 +52,13 @@ const actions = {
   addCard(context: { commit: Commit }, payload: { name: string }): void {
     context.commit("incrementCardCount");
     context.commit("addCard", payload);
+  },
+  addItem(
+    context: { commit: Commit },
+    payload: { cardId: number; name: string }
+  ): void {
+    context.commit("incrementItemCount");
+    context.commit("addItem", payload);
   },
 };
 

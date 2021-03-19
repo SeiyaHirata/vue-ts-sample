@@ -17,6 +17,41 @@
             <v-toolbar-title class="white--text font-weight-bold">{{
               card.name
             }}</v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-menu
+              bottom
+              origin="center"
+              :close-on-content-click="false"
+              transition="scale-transition"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn fab small v-bind="attrs" v-on="on">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+              <v-card width="355px">
+                <v-container>
+                  <v-text-field
+                    label="アイテム名"
+                    v-model="itemName"
+                  ></v-text-field>
+
+                  <v-textarea label="詳細" v-model="itemDetail"></v-textarea>
+                  <v-card-actions>
+                    <v-btn
+                      color="green lighten-1"
+                      @click="addItem(card.cardId)"
+                      :disabled="!itemName || !itemDetail"
+                      class="white--text font-weight-bold"
+                      width="100%"
+                      >追加</v-btn
+                    >
+                  </v-card-actions>
+                </v-container>
+              </v-card>
+            </v-menu>
           </v-app-bar>
           <v-container class="overflow-y-auto" style="max-height: 700px">
             <draggable
@@ -85,6 +120,8 @@ export default Vue.extend({
   data() {
     return {
       cardName: "",
+      itemName: "",
+      itemDetail: "",
       valueData: ["TODO", "作業中", "完了"],
     };
   },
@@ -108,6 +145,15 @@ export default Vue.extend({
     addCard() {
       this.$store.dispatch("task/addCard", { name: this.cardName });
       this.cardName = "";
+    },
+    addItem(cardId: number) {
+      this.$store.dispatch("task/addItem", {
+        cardId,
+        name: this.itemName,
+        detail: this.itemDetail,
+      });
+      this.itemName = "";
+      this.itemDetail = "";
     },
   },
 });
