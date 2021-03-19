@@ -1,9 +1,5 @@
 <template>
   <div class="v-row d-flex">
-    <!-- データの動きがわかるように表示 -->
-    <v-card>
-      <pre>{{ cards }}</pre>
-    </v-card>
     <draggable
       :animation="200"
       v-model="cards"
@@ -64,6 +60,7 @@
                 class="ma-2 move-cursor"
                 v-for="(item, i) in card.items"
                 :key="i"
+                @click="toDetail(card.cardId, item.itemId)"
               >
                 <v-card-text class="font-weight-bold"
                   >{{ item.name }}
@@ -154,6 +151,9 @@ export default Vue.extend({
       });
       this.itemName = "";
       this.itemDetail = "";
+    },
+    toDetail(cardId: number, itemId: number) {
+      this.$router.push(`/item/${cardId}/${itemId}`);
     },
   },
 });
